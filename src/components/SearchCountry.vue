@@ -1,7 +1,9 @@
 <template>
   <div>
-    <input v-model="searchQuery" placeholder="Buscar país..." />
-    <button @click="search">Buscar</button>
+    <div class="search-container">
+      <input v-model="searchQuery" placeholder="Buscar país..." />
+      <button @click="search">Buscar</button>
+    </div>
     <div v-if="searchResults.length > 0">
       <h2>Resultados de la Búsqueda</h2>
       <ul>
@@ -37,3 +39,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.search-container {
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+</style>

@@ -19,4 +19,11 @@ export default {};
   width: 100%;
   height: 100vh;
 }
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+    margin-top: 5rem;
+  }
+}
 </style>

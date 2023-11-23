@@ -24,7 +24,6 @@
               backgroundColor: isSelected(index) ? '#0088ff' : '#FFFFFF',
             }"
             style="max-width: 20rem"
-            class="mb-2"
           >
             <div class="country-container">
               <figure class="flag-icon">
@@ -222,13 +221,19 @@ export default {
   margin: 0px 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around; /* Opcional: Ajusta según tus necesidades */
+  justify-content: space-around;
 }
 
 .country-card {
   cursor: pointer;
   flex: 0 0 20rem; /* Tamaño máximo de cada tarjeta */
-  margin: 5px; /* Espaciado entre tarjetas */
+  margin: 10px; /* Espaciado entre tarjetas */
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  &:hover {
+    transform: scale(1.02); /* Ajusta el tamaño de las tarjetas */
+  }
 }
 
 .flag-icon {
@@ -280,5 +285,16 @@ input {
   border: none;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .search-container {
+    margin-top: 4rem;
+  }
+  .country-card {
+    cursor: pointer;
+    flex: 0 0 18rem; /* Tamaño máximo de cada tarjeta */
+    margin: 15px; /* Espaciado entre tarjetas */
+  }
 }
 </style>

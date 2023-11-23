@@ -177,6 +177,10 @@ export default {
   overflow-x: hidden; /* Oculta la barra de desplazamiento horizontal */
   white-space: nowrap; /* Evita el salto de línea en el texto */
   text-overflow: ellipsis; /* Añade puntos suspensivos (...) al final del texto si se corta */
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #ccc;
 }
 
 /* Estilos de la barra de desplazamiento */
@@ -192,5 +196,21 @@ export default {
 .region-scroll-box::-webkit-scrollbar-track {
   background-color: #f2f2f2; /* Color del fondo de la barra de desplazamiento */
   border-radius: 6px;
+}
+
+@media screen and (max-width: 768px) {
+  .country-info-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    margin: 0px;
+    padding: 70px 40px;
+    justify-content: space-between;
+    border: 2px solid black;
+    box-shadow: 0 0 10px black;
+  }
 }
 </style>

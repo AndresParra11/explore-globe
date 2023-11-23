@@ -1,14 +1,43 @@
 <template>
-  <div id="app">
-    <nav>
-      <img alt="Vue logo" src="./assets/logo.svg" />
-      <router-link to="/">Home</router-link>
-      <router-link to="/view-one">Vista 1</router-link>
-      <router-link to="/view-two">Vista 2</router-link>
+  <div id="app" :class="{ 'nav-open': showNav }">
+    <b-icon
+      v-if="showNavButton"
+      icon="list"
+      class="nav-toggle"
+      @click="toggleNav"
+    ></b-icon>
+    <nav :class="{ hidden: !showNav }">
+      <img alt="Vue logo" src="./assets/logo.svg" class="logo" />
+      <router-link @click.native="closeNav" to="/">Home</router-link>
+      <router-link @click.native="closeNav" to="/view-one">Vista 1</router-link>
+      <router-link @click.native="closeNav" to="/view-two">Vista 2</router-link>
     </nav>
     <router-view />
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      showNav: false, // Inicialmente mostramos el nav
+    };
+  },
+  computed: {
+    showNavButton() {
+      return window.innerWidth <= 768; // Mostrar el botón de despliegue en la media query
+    },
+  },
+  methods: {
+    toggleNav() {
+      this.showNav = !this.showNav;
+    },
+    closeNav() {
+      this.showNav = false;
+    },
+  },
+};
+</script>
 
 <style>
 #app {
@@ -39,5 +68,54 @@ nav img {
 
 nav a.router-link-exact-active {
   color: #ffa500;
+}
+
+/* Estilo para el botón de despliegue en la media query */
+@media screen and (max-width: 768px) {
+  nav {
+    display: none;
+  }
+
+  .logo {
+    width: 200px;
+    height: 200px;
+  }
+  nav a {
+    font-size: 25px;
+  }
+
+  nav a.router-link-exact-active {
+    font-size: 25px;
+  }
+
+  /* Estilo para mostrar el nav cuando showNav es true */
+  nav:not(.hidden) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff; /* Blanco */
+    z-index: 9998; /* Asegura que esté por encima de otros elementos */
+  }
+
+  /* Estilo para el botón de despliegue en la media query */
+  .nav-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 9999; /* Asegura que esté por encima de otros elementos */
+  }
+
+  /* Estilo para ocultar el botón de despliegue cuando el nav está visible */
+  .nav-toggle:not(.hidden) {
+    display: none;
+  }
 }
 </style>

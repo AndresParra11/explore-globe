@@ -238,6 +238,7 @@ export default {
 .country-card {
   cursor: pointer;
   flex: 0 0 20rem; /* Tamaño máximo de cada tarjeta */
+  height: fit-content;
   margin: 10px; /* Espaciado entre tarjetas */
   border-radius: 10px;
   border: 1px solid #ccc;

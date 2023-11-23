@@ -8,9 +8,14 @@
     ></b-icon>
     <nav :class="{ hidden: !showNav }">
       <img alt="Vue logo" src="./assets/logo.svg" class="logo" />
-      <router-link @click.native="closeNav" to="/">Home</router-link>
-      <router-link @click.native="closeNav" to="/view-one">Vista 1</router-link>
-      <router-link @click.native="closeNav" to="/view-two">Vista 2</router-link>
+      <router-link
+        v-for="link in links"
+        :key="link.to"
+        @click.native="closeNav"
+        :to="link.to"
+      >
+        {{ link.text }}
+      </router-link>
     </nav>
     <router-view />
   </div>
@@ -21,12 +26,17 @@ export default {
   data() {
     return {
       showNav: false, // Inicialmente mostramos el nav
+      showNavButton: window.innerWidth <= 768,
+      links: [
+        { to: "/", text: "Home" },
+        { to: "/view-one", text: "Vista 1" },
+        { to: "/view-two", text: "Vista 2" },
+      ],
     };
   },
-  computed: {
-    showNavButton() {
-      return window.innerWidth <= 768; // Mostrar el botón de despliegue en la media query
-    },
+  watch: {
+    // Observar cambios en la anchura de la ventana
+    "$options.methods.getWindowWidth": "handleResize",
   },
   methods: {
     toggleNav() {
@@ -34,6 +44,24 @@ export default {
     },
     closeNav() {
       this.showNav = false;
+    },
+    // Método para obtener la anchura de la ventana
+    getWindowWidth() {
+      return window.innerWidth;
+    },
+    // Manejar cambios en la anchura de la ventana
+    handleResize() {
+      this.showNavButton = this.getWindowWidth() <= 768;
+    },
+    mounted() {
+      // Manejar cambios iniciales en la anchura de la ventana
+      this.handleResize();
+      // Agregar un evento de cambio de tamaño de la ventana
+      window.addEventListener("resize", this.handleResize);
+    },
+    beforeDestroy() {
+      // Eliminar el evento de cambio de tamaño de la ventana antes de destruir el componente
+      window.removeEventListener("resize", this.handleResize);
     },
   },
 };

@@ -1,11 +1,6 @@
 <template>
   <div id="app" :class="{ 'nav-open': showNav }">
-    <b-icon
-      v-if="showNavButton"
-      icon="list"
-      class="nav-toggle"
-      @click="toggleNav"
-    ></b-icon>
+    <b-icon icon="list" class="nav-toggle" @click="toggleNav"></b-icon>
     <nav :class="{ hidden: !showNav }">
       <img alt="Vue logo" src="./assets/logo.svg" class="logo" />
       <router-link
@@ -26,7 +21,7 @@ export default {
   data() {
     return {
       showNav: false, // Inicialmente mostramos el nav
-      showNavButton: window.innerWidth <= 768,
+      showNavButton: true,
       links: [
         { to: "/", text: "Home" },
         { to: "/view-one", text: "Vista 1" },
@@ -34,34 +29,12 @@ export default {
       ],
     };
   },
-  watch: {
-    // Observar cambios en la anchura de la ventana
-    "$options.methods.getWindowWidth": "handleResize",
-  },
   methods: {
     toggleNav() {
       this.showNav = !this.showNav;
     },
     closeNav() {
       this.showNav = false;
-    },
-    // Método para obtener la anchura de la ventana
-    getWindowWidth() {
-      return window.innerWidth;
-    },
-    // Manejar cambios en la anchura de la ventana
-    handleResize() {
-      this.showNavButton = this.getWindowWidth() <= 768;
-    },
-    mounted() {
-      // Manejar cambios iniciales en la anchura de la ventana
-      this.handleResize();
-      // Agregar un evento de cambio de tamaño de la ventana
-      window.addEventListener("resize", this.handleResize);
-    },
-    beforeDestroy() {
-      // Eliminar el evento de cambio de tamaño de la ventana antes de destruir el componente
-      window.removeEventListener("resize", this.handleResize);
     },
   },
 };
@@ -93,6 +66,10 @@ nav a {
   }
 }
 
+.nav-toggle {
+  display: none !important;
+}
+
 nav img {
   width: 150px;
 }
@@ -106,6 +83,10 @@ nav a.router-link-exact-active {
 @media screen and (max-width: 768px) {
   nav {
     display: none;
+  }
+
+  .nav-toggle {
+    display: block !important;
   }
 
   .logo {

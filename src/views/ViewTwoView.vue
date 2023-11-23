@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="viewTwo">
     <h1 class="title">Hola! Esta es la vista 2</h1>
   </div>
 </template>
@@ -13,5 +13,10 @@ export default {};
   font-size: 3rem;
   text-align: center;
   margin-top: 2rem;
+}
+.viewTwo {
+  background-color: #d1ebf7;
+  width: 100%;
+  height: 100vh;
 }
 </style>

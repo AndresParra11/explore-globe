@@ -105,10 +105,11 @@ export default {
 
 <style scoped>
 .country-info-modal {
-  min-width: 300px;
+  background: #fff;
+  min-width: 350px;
   display: flex;
   flex-direction: column;
-  padding: 5px;
+  padding: 40px;
   gap: 4px;
   margin: 0px 15px;
   position: relative;
@@ -121,6 +122,7 @@ export default {
 }
 
 .country-container {
+  backgroundcolor: #fff;
   display: flex;
   flex-direction: row;
   align-items: center;

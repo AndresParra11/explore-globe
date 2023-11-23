@@ -1,22 +1,28 @@
 <template>
-  <div>
+  <div class="home">
     <div class="search-container">
-      <input v-model="searchQuery" placeholder="Buscar país..." />
+      <input
+        v-model="searchQuery"
+        placeholder="Escribe el país que deseas ver..."
+      />
       <button @click="search" class="search-button">Buscar</button>
     </div>
     <div class="main-container">
       <div v-if="countries && countries.length > 0" class="countries-container">
         <div
-          v-for="country in filteredCountries"
+          v-for="(country, index) in filteredCountries"
           :key="country.name"
           class="country-card"
-          @click="showCountryDetail(country)"
+          @click="showCountryDetail(country, index)"
         >
           <b-card
             img-src="https://picsum.photos/600/300/?image=25"
             img-alt="Image"
             img-top
             tag="article"
+            :style="{
+              backgroundColor: isSelected(index) ? '#0088ff' : '#FFFFFF',
+            }"
             style="max-width: 20rem"
             class="mb-2"
           >
@@ -25,10 +31,20 @@
                 <img :src="getCountryFlag(country)" :alt="country.name" />
               </figure>
               <div class="country-info-container">
-                <b-card-title class="text-primary fs-6 fw-bold">
+                <b-card-title
+                  class="text-primary fs-6 fw-bold"
+                  :style="{
+                    color: isSelected(index) ? '#FFFFFF !important' : 'inherit',
+                  }"
+                >
                   {{ country.name }}
                 </b-card-title>
-                <b-card-text>{{ country.continent.name }}</b-card-text>
+                <b-card-text
+                  :style="{
+                    color: isSelected(index) ? '#FFFFFF' : 'inherit',
+                  }"
+                  >{{ country.continent.name }}</b-card-text
+                >
               </div>
             </div>
           </b-card>
@@ -61,6 +77,7 @@ export default {
       detailPosition: "", // Agrega esta línea para definir detailPosition
       filteredCountries: [], // Almacena los países filtrados
       searchQuery: "", // Almacena la consulta de búsqueda
+      selectedCardIndex: null, // Almacena el índice de la tarjeta seleccionada
     };
   },
   apollo: {
@@ -150,15 +167,18 @@ export default {
         return null;
       }
     }, */
-    showCountryDetail(country) {
-      // Muestra el detalle del país al hacer clic en la tarjeta
+    showCountryDetail(country, index) {
+      this.selectedCardIndex = index; // Actualiza el índice de la tarjeta seleccionada
       this.selectedCountry = country;
-      this.showDetail = true; // Actualiza la propiedad showDetail
+      this.showDetail = true;
     },
     closeDetail() {
-      // Oculta la información del país seleccionado
+      this.selectedCardIndex = null; // Restablece el índice de la tarjeta seleccionada al cerrar el detalle
       this.selectedCountry = null;
-      this.showDetail = false; // Actualiza la propiedad showDetail
+      this.showDetail = false;
+    },
+    isSelected(index) {
+      return this.selectedCardIndex === index;
     },
     async search() {
       // Verifica si hay una consulta de búsqueda antes de realizarla
@@ -187,12 +207,19 @@ export default {
 </script>
 
 <style scoped>
+.home {
+  background-color: #d1ebf7;
+  width: 100%;
+  min-height: 100vh;
+}
+
 .main-container {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 .countries-container {
+  margin: 0px 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around; /* Opcional: Ajusta según tus necesidades */
@@ -207,6 +234,7 @@ export default {
 .flag-icon {
   width: 30%; /* Ajusta el ancho al 100% del contenedor */
   height: 50px; /* Ajusta el alto al 100% del contenedor */
+  margin: 0px;
 }
 
 .flag-icon img {
@@ -229,7 +257,7 @@ export default {
 }
 
 .search-container {
-  margin: 20px;
+  margin: 40px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -241,7 +269,7 @@ input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px 0 0 5px;
-  width: 300px; /* Ajusta la longitud según tus necesidades */
+  width: 500px; /* Ajusta la longitud según tus necesidades */
 }
 
 /* Estilos del botón de búsqueda */

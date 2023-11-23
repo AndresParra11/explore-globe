@@ -1,15 +1,17 @@
 <template>
   <div>
-    <ViewTwo />
+    <h1 class="title">Hola! Esta es la vista 2</h1>
   </div>
 </template>
 
 <script>
-import ViewTwo from "@/components/ViewTwo.vue";
-
-export default {
-  components: {
-    ViewTwo,
-  },
-};
+export default {};
 </script>
+
+<style scoped>
+.title {
+  font-size: 3rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+</style>

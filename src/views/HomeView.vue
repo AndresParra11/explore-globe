@@ -1,10 +1,13 @@
 <template>
   <div>
-    <SearchCountry />
+    <div class="search-container">
+      <input v-model="searchQuery" placeholder="Buscar país..." />
+      <button @click="search" class="search-button">Buscar</button>
+    </div>
     <div class="main-container">
-      <div v-if="countries && countries" class="countries-container">
+      <div v-if="countries && countries.length > 0" class="countries-container">
         <div
-          v-for="country in countries"
+          v-for="country in filteredCountries"
           :key="country.name"
           class="country-card"
           @click="showCountryDetail(country)"
@@ -43,7 +46,6 @@
 
 <script>
 // @ is an alias to /src
-import SearchCountry from "@/components/SearchCountry.vue";
 import CountryDetail from "@/components/DetailCountry.vue";
 import gql from "graphql-tag";
 import axios from "axios";
@@ -52,10 +54,13 @@ export default {
   name: "HomeView",
   data() {
     return {
+      countries: [],
       countries2: [],
       selectedCountry: null,
       showDetail: false,
       detailPosition: "", // Agrega esta línea para definir detailPosition
+      filteredCountries: [], // Almacena los países filtrados
+      searchQuery: "", // Almacena la consulta de búsqueda
     };
   },
   apollo: {
@@ -79,15 +84,31 @@ export default {
           }
         }
       `,
+      update: function (data) {
+        return data.countries;
+      },
     },
   },
 
   components: {
-    SearchCountry,
     CountryDetail,
   },
   mounted() {
     this.obtenerTodosLosPaises();
+  },
+  watch: {
+    countries: {
+      handler: function () {
+        this.filteredCountries = this.countries || [];
+      },
+      immediate: true, // Ejecuta el watcher inmediatamente al cargar la página
+    },
+    searchQuery: {
+      handler: function () {
+        this.filterCountries();
+      },
+      immediate: true,
+    },
   },
   methods: {
     async obtenerTodosLosPaises() {
@@ -139,6 +160,28 @@ export default {
       this.selectedCountry = null;
       this.showDetail = false; // Actualiza la propiedad showDetail
     },
+    async search() {
+      // Verifica si hay una consulta de búsqueda antes de realizarla
+      if (this.searchQuery.trim() === "") {
+        this.filteredCountries = this.countries; // Muestra todos los países si la búsqueda está vacía
+        return;
+      }
+
+      // Realiza la búsqueda por nombre de país
+      const searchResults = this.countries.filter((country) =>
+        country.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+
+      this.filteredCountries = searchResults; // Actualiza los resultados de la búsqueda
+    },
+    filterCountries() {
+      // Realiza la búsqueda por nombre de país
+      const searchResults = this.countries.filter((country) =>
+        country.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+
+      this.filteredCountries = searchResults;
+    },
   },
 };
 </script>
@@ -183,5 +226,31 @@ export default {
   margin-left: 20px;
   flex-direction: column;
   justify-content: center;
+}
+
+.search-container {
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilos del input de búsqueda */
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+  width: 300px; /* Ajusta la longitud según tus necesidades */
+}
+
+/* Estilos del botón de búsqueda */
+.search-button {
+  padding: 10px 15px;
+  background-color: #007bff; /* Azul */
+  color: #fff; /* Blanco */
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
 }
 </style>

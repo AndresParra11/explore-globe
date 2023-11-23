@@ -60,6 +60,9 @@ nav {
 nav a {
   font-weight: bold;
   color: #2c3e50;
+  &:hover {
+    transform: scale(1.06); /* Ajusta el tamaño de las tarjetas */
+  }
 }
 
 nav img {
@@ -67,6 +70,7 @@ nav img {
 }
 
 nav a.router-link-exact-active {
+  font-size: 18px;
   color: #ffa500;
 }
 

@@ -4,6 +4,7 @@
       <input
         v-model="searchQuery"
         placeholder="Escribe el país que deseas ver..."
+        @click="toggleModal"
       />
       <button @click="search" class="search-button">Buscar</button>
     </div>
@@ -55,6 +56,7 @@
         :detailPosition="detailPosition"
         @close="closeDetail"
       />
+      <ModalContinents v-if="showModal" @close="closeModal" />
     </div>
   </div>
 </template>
@@ -62,6 +64,7 @@
 <script>
 // @ is an alias to /src
 import CountryDetail from "@/components/DetailCountry.vue";
+import ModalContinents from "@/components/ModalContinents.vue";
 import gql from "graphql-tag";
 import axios from "axios";
 
@@ -77,6 +80,7 @@ export default {
       filteredCountries: [], // Almacena los países filtrados
       searchQuery: "", // Almacena la consulta de búsqueda
       selectedCardIndex: null, // Almacena el índice de la tarjeta seleccionada
+      showModal: false,
     };
   },
   apollo: {
@@ -108,6 +112,7 @@ export default {
 
   components: {
     CountryDetail,
+    ModalContinents,
   },
   mounted() {
     this.obtenerTodosLosPaises();
@@ -200,6 +205,12 @@ export default {
       );
 
       this.filteredCountries = searchResults;
+    },
+    toggleModal() {
+      this.showModal = !this.showModal;
+    },
+    closeModal() {
+      this.showModal = false;
     },
   },
 };
